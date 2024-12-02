@@ -69,7 +69,19 @@ if __name__ == "__main__":
 
     # Results should roughly match mortality rate
     assert abs(did_not_survive / len(people) - virus.mortality_rate) < 0.1, \
-    "Mortality rate does not match expected value."
+        "Mortality rate does not match expected value."
 
     # Test infection spread
     uninfected_people = [Person(i + 104, False) for i in range(100)]
+    newly_infected = 0
+    for person in uninfected_people:
+        if random.random() < virus.repro_rate:
+            person.infection = virus
+            newly_infected += 1
+
+    print(f"Newly infected: {newly_infected}")
+    print(f"Not infected: {len(uninfected_people) - newly_infected}")
+
+    # Results should roughly match reproduction rate
+    assert abs(newly_infected / len(uninfected_people) - virus.repro_rate) < 0.1, \
+        "Results do not match expected values."
