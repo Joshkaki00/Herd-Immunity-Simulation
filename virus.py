@@ -1,10 +1,17 @@
 class Virus(object):
     # Properties and attributes of the virus used in Simulation.
     def __init__(self, name, repro_rate, mortality_rate):
-        # Define the attributes of your your virus
+        ''' Initialize a Virus instance
+            :param name: String, name of the virus.
+            :param repro_rate: Float, reproduction rate of the virus.
+            :param mortality_rate: Float, mortality rate of the virus.
+        '''
         self.name = name
-        # TODO Define the other attributes of Virus
-        pass
+        self.repro_rate = repro_rate
+        self.mortality_rate = mortality_rate
+
+    def __repr__(self):
+        return f"Virus({self.name}, Repro Rate: {self.repro_rate}, Mortality Rate: {self.mortality_rate})"
 
 
 # Test this class
