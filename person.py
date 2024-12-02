@@ -67,35 +67,9 @@ if __name__ == "__main__":
     print(f"Survived: {did_survive}")
     print(f"Did not survive: {did_not_survive}")
 
+    # Results should roughly match mortality rate
+    assert abs(did_not_survive / len(people) - virus.mortality_rate) < 0.1, \
+    "Mortality rate does not match expected value."
 
-    # Now that you have a list of 100 people. Resolve whether the Person 
-    # survives the infection or not by looping over the people list. 
-
-    # for person in people:
-    #     # For each person call that person's did_survive_infection method
-    #     survived = person.did_survive_infection()
-
-    # Count the people that survived and did not survive: 
-   
-    # did_survived = 0
-    # did_not_survive = 0
-
-    # TODO Loop over all of the people 
-    # TODO If a person is_alive True add one to did_survive
-    # TODO If a person is_alive False add one to did_not_survive
-
-    # TODO When the loop is complete print your results.
-    # The results should roughly match the mortality rate of the virus
-    # For example if the mortality rate is 0.2 rough 20% of the people 
-    # should succumb. 
-
-    # Stretch challenge! 
-    # Check the infection rate of the virus by making a group of 
-    # unifected people. Loop over all of your people. 
-    # Generate a random number. If that number is less than the 
-    # infection rate of the virus that person is now infected. 
-    # Assign the virus to that person's infection attribute. 
-
-    # Now count the infected and uninfect people from this group of people. 
-    # The number of infectedf people should be roughly the same as the 
-    # infection rate of the virus.
+    # Test infection spread
+    uninfected_people = [Person(i + 104, False) for i in range(100)]
