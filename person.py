@@ -48,20 +48,25 @@ if __name__ == "__main__":
     assert infected_person.is_alive is True
     assert infected_person.is_vaccinated is False
     assert infected_person.infection == virus
-    # Create a Person object and give them the virus infection
-    infected_person = Person(3, False, virus)
-    # TODO: complete your own assert statements that test
-    # the values of each attribute
-    # assert ...
-
-    # You need to check the survival of an infected person. Since the chance
-    # of survival is random you need to check a group of people. 
-    # Create a list to hold 100 people. Use the loop below to make 100 people
+    # Test survival of infected people
     people = []
     for i in range(1, 100):
-        # TODO Make a person with an infection
-        # TODO Append the person to the people list
-        pass
+        # Create infected people
+        people.append(Person(i + 4, False, virus))
+
+    did_survive = 0
+    did_not_survive = 0
+
+    for person in people:
+        survived = person.did_survive_infection()
+        if survived:
+            did_survive += 1
+        else:
+            did_not_survive += 1
+
+    print(f"Survived: {did_survive}")
+    print(f"Did not survive: {did_not_survive}")
+
 
     # Now that you have a list of 100 people. Resolve whether the Person 
     # survives the infection or not by looping over the people list. 
