@@ -17,14 +17,14 @@ class Person(object):
             if random.random() > survival_chance:
                 # Person has died
                 self.is_alive = False
-                self.infection = None
-        else:
-            # The person survived
-            self.is_alive = True
+            else:
+                # The person survived
+                self.is_alive = True
             self.infection = None
         return self.is_alive
 
 if __name__ == "__main__":
+    random.seed(42)
     # This section is incomplete finish it and use it to test your Person class
     # TODO Define a vaccinated person and check their attributes
     vaccinated_person = Person(1, True)
