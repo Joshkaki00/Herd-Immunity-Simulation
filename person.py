@@ -11,7 +11,7 @@ class Person(object):
         self.infection = infection # Virus object
         self.is_alive = True # Bool
 
-    def did_survive_infection(self):
+    def did_survive_infection(self) -> bool:
         if self.infection:
             survival_chance = 1 - self.infection.mortality_rate
             if random.random() > survival_chance:
