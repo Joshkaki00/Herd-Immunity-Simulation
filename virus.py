@@ -22,3 +22,20 @@ if __name__ == "__main__":
     assert virus.name == "HIV"
     assert virus.repro_rate == 0.8
     assert virus.mortality_rate == 0.3
+
+    # Test edge cases
+    extreme_virus = Virus("Ebola", 1.0, 1.0)
+    assert extreme_virus.repro_rate == 1.0
+    assert extreme_virus.mortality_rate == 1.0
+
+    low_rate_virus = Virus("Flu", 0.0, 0.0)
+    assert low_rate_virus.repro_rate == 0.0
+    assert low_rate_virus.mortality_rate == 0.0
+
+    # Invalid input test
+    try:
+        invalid_virus = Virus("Invalid", -0.5, 1.5)
+    except ValueError as e:
+        assert str(e) == "Repro rate must be between 0 and 1."
+
+    print("All tests passed!")
