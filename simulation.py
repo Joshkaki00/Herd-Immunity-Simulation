@@ -4,6 +4,7 @@ from person import Person
 from logger import Logger
 from virus import Virus
 
+
 class Simulation:
     def __init__(self, virus, pop_size, vacc_percentage, initial_infected=1):
         """
@@ -45,10 +46,9 @@ class Simulation:
         return population
 
     def _simulation_should_continue(self):
-        ''' Determine whether the simulation should continue. '''
+        """ Determine whether the simulation should continue. """
         infected_people = [p for p in self.population if p.infection and p.is_alive]
         return len(infected_people) > 0
-
 
     def run(self):
         """
@@ -71,55 +71,47 @@ class Simulation:
         print(f"Simulation completed in {self.current_step} time steps.")
 
     def time_step(self):
-        ''' Simulate one time step of the simulation. '''
-        for person in self.population:
-            if person.infection and person.is_alive:
-                for _ in range(10):  # Reduce the number of interactions
-                    living_people = [p for p in self.population if p.is_alive]
-                    random_person = random.choice(living_people)
-                    self.interaction(person, random_person)
-        self._infect_newly_infected()
-
-
-    # Infect newly infected people at the end of the time step
-    def _infect_newly_infected(self):
-        ''' Infect all people marked as newly infected. '''
+        """ Simulate one time step of the simulation. """
+        total_interactions = 0
         new_infections = 0
 
-        for person in self.newly_infected:
-            if random.random() < self.virus.mortality_rate:
-                person.is_alive = False  # Mark as dead
-            else:
-                person.infection = self.virus
-                new_infections += 1
-        self.newly_infected = []
+        for person in self.population:
+            if person.infection and person.is_alive:
+                for _ in range(10):  # Simulate 10 interactions per infected person
+                    living_people = [p for p in self.population if p.is_alive]
+                    random_person = random.choice(living_people)
+                    total_interactions += 1
+                    new_infections += self.interaction(person, random_person)
 
-    # Log step summary
-    def log_step_summary(self, step, interactions, new_infections):
-        with open(self.file_name, 'a') as file:
-            file.write(f"Step {step}:\n")
-            file.write(f"  Total Interactions: {interactions}\n")
-            file.write(f"  New Infections: {new_infections}\n\n")
+        self.logger.log_step(self.current_step, total_interactions, new_infections)
+        self._infect_newly_infected()
 
     def interaction(self, infected_person, random_person):
         """
         Simulate an interaction between an infected person and another person.
         :param infected_person: Person object, the infected individual.
         :param random_person: Person object, the other individual.
+        :return: 1 if a new infection occurs, 0 otherwise.
         """
         if random_person.is_vaccinated or random_person.infection:
             self.logger.log_interactions(infected_person._id, random_person._id, False)
+            return 0
         else:
             if random.random() < self.virus.repro_rate:
                 self.newly_infected.append(random_person)
                 self.logger.log_interactions(infected_person._id, random_person._id, True)
+                return 1
+        return 0
 
     def _infect_newly_infected(self):
         """
         Infect all people marked as newly infected.
         """
         for person in self.newly_infected:
-            person.infection = self.virus
+            if random.random() < self.virus.mortality_rate:
+                person.is_alive = False  # Mark as dead
+            else:
+                person.infection = self.virus
         self.newly_infected = []
 
 
