@@ -138,4 +138,7 @@ venv/
 # VS Code Config
 .vscode/
 
+# logs
+simulation_log.txt
+
 # End of https://www.gitignore.io/api/macos,python
