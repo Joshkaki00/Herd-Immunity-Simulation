@@ -46,7 +46,7 @@ class Simulation:
         return population
 
     def _simulation_should_continue(self):
-        """ Determine whether the simulation should continue. """
+        ''' Determine whether the simulation should continue. '''
         infected_people = [p for p in self.population if p.infection and p.is_alive]
         return len(infected_people) > 0
 
@@ -104,14 +104,14 @@ class Simulation:
         return 0
 
     def _infect_newly_infected(self):
-        """
-        Infect all people marked as newly infected.
-        """
+        ''' Infect all people marked as newly infected. '''
         for person in self.newly_infected:
             if random.random() < self.virus.mortality_rate:
-                person.is_alive = False  # Mark as dead
+                person.is_alive = False
+                print(f"Person {person._id} has died.")
             else:
                 person.infection = self.virus
+                print(f"Person {person._id} is now infected.")
         self.newly_infected = []
 
 
