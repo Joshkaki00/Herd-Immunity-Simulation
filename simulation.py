@@ -74,16 +74,18 @@ class Simulation:
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 6 and len(sys.argv) != 7:
-        print("Usage: python simulation.py <pop_size> <vacc_percentage> <virus_name> <mortality_rate> <repro_rate> [initial_infected]")
-        sys.exit(1)
-    pop_size = int(sys.argv[1])
-    vacc_percentage = float(sys.argv[2])
-    virus_name = sys.argv[3]
-    mortality_rate = float(sys.argv[4])
-    repro_rate = float(sys.argv[5])
-    initial_infected = int(sys.argv[6]) if len(sys.argv) == 7 else 1
+    # Test your simulation here
+    virus_name = "Sniffles"
+    repro_num = 0.5
+    mortality_rate = 0.12
+    virus = Virus(virus_name, repro_num, mortality_rate)
 
-    virus = Virus(virus_name, repro_rate, mortality_rate)
-    sim = Simulation(pop_size, vacc_percentage, virus, initial_infected)
+    # Set some values used by the simulation
+    pop_size = 1000
+    vacc_percentage = 0.1
+    initial_infected = 10
+
+    # Make a new instance of the imulation
+    virus = Virus(virus, pop_size, vacc_percentage, initial_infected)
+    sim = Simulation(pop_size, vacc_percentage, initial_infected, virus)
     sim.run()
