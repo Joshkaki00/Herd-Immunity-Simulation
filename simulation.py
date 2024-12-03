@@ -45,17 +45,10 @@ class Simulation:
         return population
 
     def _simulation_should_continue(self):
-        """
-        Determine whether the simulation should continue.
-        :return: Boolean, True if the simulation should continue, False otherwise.
-        """
-        living_people = [person for person in self.population if person.is_alive]
-        infected_people = [person for person in living_people if person.infection]
-        susceptible_people = any(
-            person.is_alive and not person.is_vaccinated and not person.infection for person in living_people
-        )
+        ''' Determine whether the simulation should continue. '''
+        infected_people = [p for p in self.population if p.infection and p.is_alive]
+        return len(infected_people) > 0
 
-        return len(infected_people) > 0 and susceptible_people
 
     def run(self):
         """
@@ -78,33 +71,35 @@ class Simulation:
         print(f"Simulation completed in {self.current_step} time steps.")
 
     def time_step(self):
-        """
-        Simulate one time step of the simulation.
-        """
-        interactions = 0
-        new_infections = 0
-
-        living_people = [person for person in self.population if person.is_alive]
-
-        for person in living_people:
-            if person.infection:
-                for _ in range(100):  # Assume 100 interactions per infected person
+        ''' Simulate one time step of the simulation. '''
+        for person in self.population:
+            if person.infection and person.is_alive:
+                for _ in range(10):  # Reduce the number of interactions
+                    living_people = [p for p in self.population if p.is_alive]
                     random_person = random.choice(living_people)
-                    interactions += 1
-                    if random_person.is_alive and not random_person.infection and not random_person.is_vaccinated:
-                        if random.random() < self.virus.repro_rate:
-                            self.newly_infected.append(random_person)
-                            new_infections += 1
-
-        # Infect newly infected people at the end of the time step
+                    self.interaction(person, random_person)
         self._infect_newly_infected()
 
-        # Log step summary
-        self.logger.log_step_summary(
-            step=self.current_step,
-            interactions=interactions,
-            new_infections=new_infections
-        )
+
+    # Infect newly infected people at the end of the time step
+    def _infect_newly_infected(self):
+        ''' Infect all people marked as newly infected. '''
+        new_infections = 0
+
+        for person in self.newly_infected:
+            if random.random() < self.virus.mortality_rate:
+                person.is_alive = False  # Mark as dead
+            else:
+                person.infection = self.virus
+                new_infections += 1
+        self.newly_infected = []
+
+    # Log step summary
+    def log_step_summary(self, step, interactions, new_infections):
+        with open(self.file_name, 'a') as file:
+            file.write(f"Step {step}:\n")
+            file.write(f"  Total Interactions: {interactions}\n")
+            file.write(f"  New Infections: {new_infections}\n\n")
 
     def interaction(self, infected_person, random_person):
         """
