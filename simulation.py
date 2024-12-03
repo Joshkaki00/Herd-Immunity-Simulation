@@ -13,30 +13,29 @@ class Simulation:
         self.logger = Logger("simulation_log.txt")
         self.population = self._create_population()
         self.newly_infected = []
+        self.total_interactions = 0
+        self.vaccination_interactions = 0
+        self.death_interactions = 0
 
     def _create_population(self):
         population = []
         num_vaccinated = int(self.pop_size * self.vacc_percentage)
 
-        # Vaccinated population
         for _ in range(num_vaccinated):
             population.append(Person(_id=len(population), is_vaccinated=True))
 
-        # Initially infected population
         for _ in range(self.initial_infected):
             population.append(Person(_id=len(population), is_vaccinated=False, infection=self.virus))
 
-        # Healthy, unvaccinated population
         while len(population) < self.pop_size:
             population.append(Person(_id=len(population), is_vaccinated=False))
 
         return population
 
     def _simulation_should_continue(self):
-        # Simulation continues as long as there are infected people alive
         living_infected = any(p.infection and p.is_alive for p in self.population)
-        living_unvaccinated = any(not p.is_vaccinated and p.is_alive for p in self.population)
-        return living_infected and living_unvaccinated
+        living_count = sum(1 for p in self.population if p.is_alive)
+        return living_infected and living_count > 0
 
     def run(self):
         self.logger.write_metadata(
@@ -52,35 +51,39 @@ class Simulation:
             step += 1
             print(f"Running Time Step {step}")
             new_infections, interactions = self.time_step()
+            self.total_interactions += interactions
             total_living = sum(1 for p in self.population if p.is_alive)
             total_dead = self.pop_size - total_living
             total_vaccinated = sum(1 for p in self.population if p.is_vaccinated)
-
-            # Log step summary
             self.logger.log_step_summary(step, new_infections, interactions, total_living, total_dead, total_vaccinated)
 
-        # Final statistics
         total_living = sum(1 for p in self.population if p.is_alive)
         total_dead = self.pop_size - total_living
         total_vaccinated = sum(1 for p in self.population if p.is_vaccinated)
-        self.logger.log_final_summary(self.pop_size, total_living, total_dead, total_vaccinated, step)
+        reason = "All infected individuals have either died or recovered."
+        self.logger.log_final_summary(
+            self.pop_size,
+            total_living,
+            total_dead,
+            total_vaccinated,
+            self.total_interactions,
+            self.vaccination_interactions,
+            self.death_interactions,
+            reason
+        )
         print("Simulation complete.")
 
     def time_step(self):
-        """
-        Simulate one time step of the simulation.
-        """
         interactions = 0
         new_infections = 0
 
         for person in self.population:
             if person.infection and person.is_alive:
-                # Determine if the infected person dies
                 if random.random() < self.virus.mortality_rate:
                     person.is_alive = False
-                    continue  # Skip interactions for dead individuals
+                    self.death_interactions += 1
+                    continue
 
-                # Interactions with 100 other random people
                 for _ in range(100):
                     other_person = random.choice(self.population)
                     if other_person.is_alive:
@@ -88,7 +91,6 @@ class Simulation:
                         if self.interaction(other_person):
                             new_infections += 1
 
-        # Infect newly infected individuals at the end of the time step
         self._infect_newly_infected()
 
         return new_infections, interactions
