@@ -19,20 +19,20 @@ class Simulation:
 
     def _create_population(self):
         """
-        Create the population with vaccinated, infected, and healthy individuals.
+        Create a list of Person objects for the population.
         """
         population = []
         num_vaccinated = int(self.pop_size * self.vacc_percentage)
 
-        # Add vaccinated individuals
+        # Create vaccinated people
         for _ in range(num_vaccinated):
             population.append(Person(_id=len(population), is_vaccinated=True))
 
-        # Add infected individuals
+        # Create infected people
         for _ in range(self.initial_infected):
-            population.append(Person(_id=len(population), infection=self.virus))
+            population.append(Person(_id=len(population), is_vaccinated=False, infection=self.virus))
 
-        # Add healthy, unvaccinated individuals
+        # Create healthy, unvaccinated people
         while len(population) < self.pop_size:
             population.append(Person(_id=len(population), is_vaccinated=False))
 
