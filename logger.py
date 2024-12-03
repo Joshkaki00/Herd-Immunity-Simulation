@@ -37,7 +37,27 @@ class Logger(object):
             file.write("\n")
 
     def log_infection_survival(self, step_number, population_count, number_of_new_fatalities):
-        # TODO: Finish this method. If the person survives, did_die_from_infection
-        # should be False.  Otherwise, did_die_from_infection should be True.
-        # Append the results of the infection to the logfile
-        pass
+        ''' Log the survival results of infections during a step.
+        :param step_number: Integer, the current step number in the simulation.
+        :param population_count: Integer, the number of new fatalities during this step. '''
+        with open(self.file_name, "a") as file:
+            file.write(f"Step {step_number}:\n")
+            file.write(f" Total Population: {population_count}\n")
+            file.write(f" New Fatalities: {number_of_new_fatalities}\n")
+            file.write("\n")
+
+    def log_final_summary(self, total_population, total_living, total_dead, total_vaccinated, total_steps):
+        ''' Log the final results of the simulation.
+        :param total_population: Integer, the initial population size.
+        :param total_living: Integer, the total number of living individuals at the end.
+        :param total_dead: Integer, the total number of fatalities during the simulation.
+        :param total_vaccinated: Integer, the total number of vaccinated individuals at the end.
+        :param total_steps: Integer, the total number of steps in the simulation.'''
+        with open(self.file_name, "a") as file:
+            file.write(f"=== Final Simulation Summary ===\n")
+            file.write(f"Total Population: {total_population}\n")
+            file.write(f"Total Living: {total_living}\n")
+            file.write(f"Total Dead: {total_dead}\n")
+            file.write(f"Total Vaccinated: {total_vaccinated}\n")
+            file.write(f"Total Steps: {total_steps}\n")
+            file.write("\n")
