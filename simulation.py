@@ -83,25 +83,25 @@ class Simulation(object):
         self._infect_newly_infected()
 
     def interaction(self, infected_person, random_person):
-        # TODO: Finish this method.
-        # The possible cases you'll need to cover are listed below:
-            # random_person is vaccinated:
-            #     nothing happens to random person.
-            # random_person is already infected:
-            #     nothing happens to random person.
-            # random_person is healthy, but unvaccinated:
-            #     generate a random number between 0.0 and 1.0.  If that number is smaller
-            #     than repro_rate, add that person to the newly infected array
-            #     Simulation object's newly_infected array, so that their infected
-            #     attribute can be changed to True at the end of the time step.
-        # TODO: Call logger method during this method.
-        pass
+        ''' Simulate an interaction between an infected person and another person.
+
+        :param infected_person: Person object, the infected individual.
+        :param random_person: Person object, the other individual.'''
+
+        if random_person.is_vaccinated or random_person.infection:
+            # No infection occurs if the person is vaccinated or already infected
+            self.logger.log_interactions(0, 0, 0)
+        else:
+            # Infection occurs
+            if random.random() < self.virus.repro_rate:
+                self.newly_infected.append(random_person)
+                self.logger.log_interactions(1, 1, 1)
 
     def _infect_newly_infected(self):
-        # TODO: Call this method at the end of every time step and infect each Person.
-        # TODO: Once you have iterated through the entire list of self.newly_infected, remember
-        # to reset self.newly_infected back to an empty list.
-        pass
+        ''' Infect all people marked as newly infected.'''
+        for person in self.newly_infected:
+            person.infection = self.virus
+        self.newly_infected = []
 
 
 if __name__ == "__main__":
@@ -120,4 +120,4 @@ if __name__ == "__main__":
     virus = Virus(virus, pop_size, vacc_percentage, initial_infected)
     sim = Simulation(pop_size, vacc_percentage, initial_infected, virus)
 
-    # sim.run()
+    sim.run()
