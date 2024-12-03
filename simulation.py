@@ -58,15 +58,11 @@ class Simulation(object):
         ''' Run the simulation until it is complete.'''
 
         time_step_counter = 0
-        should_continue = True
+        self.logger.write_metadata(self.pop_size, self.vacc_percentage, self.virus.name, self.virus.mortality_rate, self.virus.repro_rate)
 
-        while should_continue:
-            # TODO: Increment the time_step_counter
-            # TODO: for every iteration of this loop, call self.time_step() 
-            # Call the _simulation_should_continue method to determine if 
-            # the simulation should continue
-            should_continue = self._simulation_should_continue()
-            pass
+        while self._simulation_should_continue():
+            time_step_counter += 1
+            self.time_step()
 
         # TODO: Write meta data to the logger. This should be starting 
         # statistics for the simulation. It should include the initial
