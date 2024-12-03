@@ -6,19 +6,21 @@ from virus import Virus
 
 
 class Simulation:
-    def __init__(self, pop_size, vacc_percentage, virus, initial_infected=1, verbose=False):
+    def __init__(self, pop_size, vacc_percentage, virus, initial_infected=1):
         self.pop_size = pop_size
         self.vacc_percentage = vacc_percentage
         self.virus = virus
         self.initial_infected = initial_infected
-        self.logger = Logger("simulation_log.txt", verbose=verbose)
+        self.logger = Logger("simulation_log.txt")
         self.population = self._create_population()
         self.newly_infected = []
         self.total_interactions = 0
+        self.no_new_infection_steps = 0  # Tracks consecutive steps with no new infections
 
     def _create_population(self):
         population = []
         num_vaccinated = int(self.pop_size * self.vacc_percentage)
+
         for _ in range(num_vaccinated):
             population.append(Person(_id=len(population), is_vaccinated=True))
         for _ in range(self.initial_infected):
@@ -28,7 +30,10 @@ class Simulation:
         return population
 
     def _simulation_should_continue(self):
-        return any(p.infection and p.is_alive for p in self.population)
+        # Continue only if there are active infections and at least one vulnerable person
+        active_infections = any(p.infection and p.is_alive for p in self.population)
+        vulnerable_people = any(not p.is_vaccinated and not p.infection and p.is_alive for p in self.population)
+        return active_infections and vulnerable_people
 
     def run(self):
         self.logger.write_metadata(self.pop_size, self.vacc_percentage, self.virus.name,
@@ -37,7 +42,17 @@ class Simulation:
         while self._simulation_should_continue():
             step += 1
             print(f"Running Time Step {step}")
-            self.time_step(step)
+            new_infections = self.time_step(step)
+
+            if new_infections == 0:
+                self.no_new_infection_steps += 1
+            else:
+                self.no_new_infection_steps = 0
+
+            # Stop if no new infections occur for 2 consecutive steps
+            if self.no_new_infection_steps >= 2:
+                break
+
         living = sum(1 for p in self.population if p.is_alive)
         dead = self.pop_size - living
         vaccinated = sum(1 for p in self.population if p.is_vaccinated)
@@ -46,16 +61,18 @@ class Simulation:
     def time_step(self, step):
         interactions = 0
         new_infections = 0
+
         for person in self.population:
             if person.infection and person.is_alive:
                 for _ in range(100):  # Each infected person interacts 100 times
-                    other_person = random.choice(self.population)
-                    if other_person.is_alive:
-                        interactions += 1
-                        new_infections += self.interaction(person, other_person)
+                    other_person = random.choice([p for p in self.population if p.is_alive])
+                    interactions += 1
+                    new_infections += self.interaction(person, other_person)
+
         self._infect_newly_infected()
         self.logger.log_time_step(step, new_infections, interactions)
         self.total_interactions += interactions
+        return new_infections
 
     def interaction(self, infected_person, random_person):
         if random_person.is_vaccinated or random_person.infection:
@@ -71,6 +88,7 @@ class Simulation:
         for person in self.newly_infected:
             person.infection = self.virus
         self.newly_infected = []
+
 
 
 if __name__ == "__main__":
