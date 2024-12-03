@@ -23,21 +23,36 @@ class Simulation(object):
         self.newly_infected = []
 
     def _create_population(self):
-        # TODO: Create a list of people (Person instances). This list 
-        # should have a total number of people equal to the pop_size. 
-        # Some of these people will be uninfected and some will be infected.
-        # The number of infected people should be equal to the the initial_infected
-        # TODO: Return the list of people
-        pass
+        ''' Create a list of Person objects for the population.
+        :return: List, a list of Person objects.'''
+
+        population = []
+        num_vaccinated = int(self.pop_size * self.vacc_percentage)
+
+        # Create vaccinated people
+        for _ in range(num_vaccinated):
+            population.append(Person(_id=len(population, is_vaccinated=True)))
+
+        # Create infected people
+        for _ in range(self.initial_infected):
+            population.append(Person(_id=len(population), is_vaccinated=False, infection=self.virus))
+
+        # Create healthy, unvaccinated people
+        while len(population) < self.pop_size:
+            population.append(Person(_id=len(population), is_vaccinated=False))
+
+        return population
 
     def _simulation_should_continue(self):
-        # This method will return a booleanb indicating if the simulation 
-        # should continue. 
-        # The simulation should not continue if all of the people are dead, 
-        # or if all of the living people have been vaccinated. 
-        # TODO: Loop over the list of people in the population. Return True
-        # if the simulation should continue or False if not.
-        pass
+        ''' Determine whether the simulation should continue.
+        :return: Boolean, True if the simulation should continue, False otherwise.'''
+
+        living_people = [person for person in self.population if person.is_alive]
+        infected_people = [person for person in living_people if person.infection]
+        vaccinated_people = [person for person in living_people if person.is_vaccinated]
+
+        # End simulation if no infected people or everyone is dead
+        return len(infected_people) > 0 and len(living_people) > len(vaccinated_people)
 
     def run(self):
         # This method starts the simulation. It should track the number of 
