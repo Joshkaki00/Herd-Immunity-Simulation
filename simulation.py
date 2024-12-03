@@ -47,8 +47,12 @@ class Simulation:
         print("Simulation complete.")
 
     def time_step(self, step):
+        """
+        Simulate one time step of the simulation.
+        """
         interactions = 0
         new_infections = 0
+
         for person in self.population:
             if person.infection and person.is_alive:
                 for _ in range(100):  # Each infected person interacts 100 times
@@ -56,14 +60,15 @@ class Simulation:
                     if other_person.is_alive:
                         interactions += 1
                         new_infections += self.interaction(person, other_person)
+
         self._infect_newly_infected()
 
-        # Calculate updated stats
-        total_living = sum(1 for p in self.population if p.is_alive)
-        total_dead = self.pop_size - total_living
-        total_vaccinated = sum(1 for p in self.population if p.is_vaccinated)
+        living = sum(1 for p in self.population if p.is_alive)
+        dead = self.pop_size - living
+        vaccinated = sum(1 for p in self.population if p.is_vaccinated)
 
-        self.logger.log_time_step(step, new_infections, interactions, total_living, total_dead, total_vaccinated)
+        # Log the results for this step
+        self.logger.log_step_summary(step, new_infections, interactions, living, dead, vaccinated)
 
 
     def interaction(self, infected_person, random_person):
