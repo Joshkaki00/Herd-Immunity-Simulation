@@ -1,36 +1,48 @@
 class Logger:
-    def __init__(self, file_name):
-        self.file_name = file_name
-        with open(self.file_name, 'w') as file:
-            file.write("")  # Clear the file at the start of each simulation.
+    def __init__(self, filename):
+        """
+        Initialize a Logger instance.
 
-    def write_metadata(self, pop_size, vacc_percentage, virus_name, mortality_rate, repro_rate):
-        with open(self.file_name, 'a') as file:
-            file.write(f"=== Simulation Metadata ===\n")
-            file.write(f"Population Size: {pop_size}\n")
+        :param filename: String, the name of the file to write logs to.
+        """
+        self.filename = filename
+
+    def write_metadata(self, population_size, vacc_percentage, virus_name, mortality_rate, repro_rate):
+        """
+        Write the initial metadata of the simulation to the log file.
+        """
+        with open(self.filename, 'w') as file:
+            file.write(f"Population Size: {population_size}\n")
             file.write(f"Vaccination Percentage: {vacc_percentage}\n")
             file.write(f"Virus: {virus_name}\n")
             file.write(f"Mortality Rate: {mortality_rate}\n")
-            file.write(f"Basic Reproduction Number: {repro_rate}\n\n")
+            file.write(f"Reproduction Rate: {repro_rate}\n")
+            file.write("\n")
 
-    def log_step(self, step, total_interactions, new_infections):
-        with open(self.file_name, 'a') as file:
-            file.write(f"Step {step}:\n")
-            file.write(f"  Total Interactions: {total_interactions}\n")
-            file.write(f"  New Infections: {new_infections}\n\n")
+    def log_interaction(self, person, random_person, did_infect, is_vaccinated, already_infected):
+        """
+        Log a single interaction event.
+        """
+        with open(self.filename, 'a') as file:
+            file.write(
+                f"Person {person._id} interacted with Person {random_person._id}. "
+                f"Infect: {did_infect}, Vaccinated: {is_vaccinated}, Already Infected: {already_infected}\n"
+            )
 
-    def log_interactions(self, infected_id, random_id, did_infect):
-        with open(self.file_name, 'a') as file:
-            if did_infect:
-                file.write(f"Person {infected_id} infected Person {random_id}\n")
-            else:
-                file.write(f"Person {infected_id} did not infect Person {random_id}\n")
+    def log_infection_survival(self, person, did_survive):
+        """
+        Log whether an infected person survived or died.
+        """
+        with open(self.filename, 'a') as file:
+            status = "survived" if did_survive else "died"
+            file.write(f"Person {person._id} {status} the infection.\n")
 
-    def log_final_summary(self, pop_size, living, dead, vaccinated, total_steps):
-        with open(self.file_name, 'a') as file:
-            file.write(f"=== Final Summary ===\n")
-            file.write(f"Total Population: {pop_size}\n")
-            file.write(f"Living: {living}\n")
-            file.write(f"Dead: {dead}\n")
-            file.write(f"Vaccinated: {vaccinated}\n")
-            file.write(f"Total Steps: {total_steps}\n")
+    def log_summary(self, total_living, total_dead, total_vaccinated):
+        """
+        Log the summary of the simulation.
+        """
+        with open(self.filename, 'a') as file:
+            file.write("\n=== Simulation Summary ===\n")
+            file.write(f"Living: {total_living}\n")
+            file.write(f"Dead: {total_dead}\n")
+            file.write(f"Vaccinated: {total_vaccinated}\n")
