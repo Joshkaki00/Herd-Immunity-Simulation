@@ -1,0 +1,388 @@
+Simulation Date: 2024-12-03 00:03:53
+Initial Population Size: 1000
+Initial Infected People: 10
+Virus Name: Seasonal Flu
+Virus Mortality Rate: 10.00%
+Virus Reproduction Rate: 20.00%
+=== Start of Simulation ===
+
+Step 1:
+  New Infections: 27
+  Deaths This Step: 2
+  Total Living: 998
+  Total Dead: 2
+  Total Vaccinated: 800
+
+Step 2:
+  New Infections: 114
+  Deaths This Step: 1
+  Total Living: 997
+  Total Dead: 3
+  Total Vaccinated: 800
+
+Step 3:
+  New Infections: 148
+  Deaths This Step: 13
+  Total Living: 984
+  Total Dead: 16
+  Total Vaccinated: 800
+
+Step 4:
+  New Infections: 30
+  Deaths This Step: 18
+  Total Living: 966
+  Total Dead: 34
+  Total Vaccinated: 800
+
+Step 5:
+  New Infections: 10
+  Deaths This Step: 14
+  Total Living: 952
+  Total Dead: 48
+  Total Vaccinated: 800
+
+Step 6:
+  New Infections: 4
+  Deaths This Step: 16
+  Total Living: 936
+  Total Dead: 64
+  Total Vaccinated: 800
+
+Step 7:
+  New Infections: 0
+  Deaths This Step: 8
+  Total Living: 928
+  Total Dead: 72
+  Total Vaccinated: 800
+
+Step 8:
+  New Infections: 0
+  Deaths This Step: 13
+  Total Living: 915
+  Total Dead: 85
+  Total Vaccinated: 800
+
+Step 9:
+  New Infections: 0
+  Deaths This Step: 13
+  Total Living: 902
+  Total Dead: 98
+  Total Vaccinated: 800
+
+Step 10:
+  New Infections: 0
+  Deaths This Step: 10
+  Total Living: 892
+  Total Dead: 108
+  Total Vaccinated: 800
+
+Step 11:
+  New Infections: 0
+  Deaths This Step: 13
+  Total Living: 879
+  Total Dead: 121
+  Total Vaccinated: 800
+
+Step 12:
+  New Infections: 0
+  Deaths This Step: 14
+  Total Living: 865
+  Total Dead: 135
+  Total Vaccinated: 800
+
+Step 13:
+  New Infections: 0
+  Deaths This Step: 6
+  Total Living: 859
+  Total Dead: 141
+  Total Vaccinated: 800
+
+Step 14:
+  New Infections: 0
+  Deaths This Step: 6
+  Total Living: 853
+  Total Dead: 147
+  Total Vaccinated: 800
+
+Step 15:
+  New Infections: 0
+  Deaths This Step: 5
+  Total Living: 848
+  Total Dead: 152
+  Total Vaccinated: 800
+
+Step 16:
+  New Infections: 0
+  Deaths This Step: 6
+  Total Living: 842
+  Total Dead: 158
+  Total Vaccinated: 800
+
+Step 17:
+  New Infections: 0
+  Deaths This Step: 4
+  Total Living: 838
+  Total Dead: 162
+  Total Vaccinated: 800
+
+Step 18:
+  New Infections: 0
+  Deaths This Step: 3
+  Total Living: 835
+  Total Dead: 165
+  Total Vaccinated: 800
+
+Step 19:
+  New Infections: 0
+  Deaths This Step: 6
+  Total Living: 829
+  Total Dead: 171
+  Total Vaccinated: 800
+
+Step 20:
+  New Infections: 0
+  Deaths This Step: 3
+  Total Living: 826
+  Total Dead: 174
+  Total Vaccinated: 800
+
+Step 21:
+  New Infections: 0
+  Deaths This Step: 0
+  Total Living: 826
+  Total Dead: 174
+  Total Vaccinated: 800
+
+Step 22:
+  New Infections: 0
+  Deaths This Step: 3
+  Total Living: 823
+  Total Dead: 177
+  Total Vaccinated: 800
+
+Step 23:
+  New Infections: 0
+  Deaths This Step: 4
+  Total Living: 819
+  Total Dead: 181
+  Total Vaccinated: 800
+
+Step 24:
+  New Infections: 0
+  Deaths This Step: 0
+  Total Living: 819
+  Total Dead: 181
+  Total Vaccinated: 800
+
+Step 25:
+  New Infections: 0
+  Deaths This Step: 2
+  Total Living: 817
+  Total Dead: 183
+  Total Vaccinated: 800
+
+Step 26:
+  New Infections: 0
+  Deaths This Step: 2
+  Total Living: 815
+  Total Dead: 185
+  Total Vaccinated: 800
+
+Step 27:
+  New Infections: 0
+  Deaths This Step: 3
+  Total Living: 812
+  Total Dead: 188
+  Total Vaccinated: 800
+
+Step 28:
+  New Infections: 0
+  Deaths This Step: 1
+  Total Living: 811
+  Total Dead: 189
+  Total Vaccinated: 800
+
+Step 29:
+  New Infections: 0
+  Deaths This Step: 3
+  Total Living: 808
+  Total Dead: 192
+  Total Vaccinated: 800
+
+Step 30:
+  New Infections: 0
+  Deaths This Step: 3
+  Total Living: 805
+  Total Dead: 195
+  Total Vaccinated: 800
+
+Step 31:
+  New Infections: 0
+  Deaths This Step: 0
+  Total Living: 805
+  Total Dead: 195
+  Total Vaccinated: 800
+
+Step 32:
+  New Infections: 0
+  Deaths This Step: 0
+  Total Living: 805
+  Total Dead: 195
+  Total Vaccinated: 800
+
+Step 33:
+  New Infections: 0
+  Deaths This Step: 1
+  Total Living: 804
+  Total Dead: 196
+  Total Vaccinated: 800
+
+Step 34:
+  New Infections: 0
+  Deaths This Step: 0
+  Total Living: 804
+  Total Dead: 196
+  Total Vaccinated: 800
+
+Step 35:
+  New Infections: 0
+  Deaths This Step: 1
+  Total Living: 803
+  Total Dead: 197
+  Total Vaccinated: 800
+
+Step 36:
+  New Infections: 0
+  Deaths This Step: 0
+  Total Living: 803
+  Total Dead: 197
+  Total Vaccinated: 800
+
+Step 37:
+  New Infections: 0
+  Deaths This Step: 0
+  Total Living: 803
+  Total Dead: 197
+  Total Vaccinated: 800
+
+Step 38:
+  New Infections: 0
+  Deaths This Step: 0
+  Total Living: 803
+  Total Dead: 197
+  Total Vaccinated: 800
+
+Step 39:
+  New Infections: 0
+  Deaths This Step: 0
+  Total Living: 803
+  Total Dead: 197
+  Total Vaccinated: 800
+
+Step 40:
+  New Infections: 0
+  Deaths This Step: 0
+  Total Living: 803
+  Total Dead: 197
+  Total Vaccinated: 800
+
+Step 41:
+  New Infections: 0
+  Deaths This Step: 0
+  Total Living: 803
+  Total Dead: 197
+  Total Vaccinated: 800
+
+Step 42:
+  New Infections: 0
+  Deaths This Step: 1
+  Total Living: 802
+  Total Dead: 198
+  Total Vaccinated: 800
+
+Step 43:
+  New Infections: 0
+  Deaths This Step: 0
+  Total Living: 802
+  Total Dead: 198
+  Total Vaccinated: 800
+
+Step 44:
+  New Infections: 0
+  Deaths This Step: 0
+  Total Living: 802
+  Total Dead: 198
+  Total Vaccinated: 800
+
+Step 45:
+  New Infections: 0
+  Deaths This Step: 0
+  Total Living: 802
+  Total Dead: 198
+  Total Vaccinated: 800
+
+Step 46:
+  New Infections: 0
+  Deaths This Step: 0
+  Total Living: 802
+  Total Dead: 198
+  Total Vaccinated: 800
+
+Step 47:
+  New Infections: 0
+  Deaths This Step: 0
+  Total Living: 802
+  Total Dead: 198
+  Total Vaccinated: 800
+
+Step 48:
+  New Infections: 0
+  Deaths This Step: 0
+  Total Living: 802
+  Total Dead: 198
+  Total Vaccinated: 800
+
+Step 49:
+  New Infections: 0
+  Deaths This Step: 1
+  Total Living: 801
+  Total Dead: 199
+  Total Vaccinated: 800
+
+Step 50:
+  New Infections: 0
+  Deaths This Step: 0
+  Total Living: 801
+  Total Dead: 199
+  Total Vaccinated: 800
+
+Step 51:
+  New Infections: 0
+  Deaths This Step: 0
+  Total Living: 801
+  Total Dead: 199
+  Total Vaccinated: 800
+
+Step 52:
+  New Infections: 0
+  Deaths This Step: 0
+  Total Living: 801
+  Total Dead: 199
+  Total Vaccinated: 800
+
+Step 53:
+  New Infections: 0
+  Deaths This Step: 1
+  Total Living: 800
+  Total Dead: 200
+  Total Vaccinated: 800
+
+=== Final Summary ===
+Total Population: 1000
+Living: 800
+Dead: 200
+Vaccinated: 800
+Total Interactions: 153872
+Interactions Resulting in Vaccination: 0
+Interactions Resulting in Death: 200
+Simulation Ended Because: All infected individuals have either died or recovered.
