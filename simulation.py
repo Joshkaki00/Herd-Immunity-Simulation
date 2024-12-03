@@ -17,19 +17,33 @@ class Simulation:
     def _create_population(self):
         population = []
         num_vaccinated = int(self.pop_size * self.vacc_percentage)
+
+        # Vaccinated population
         for _ in range(num_vaccinated):
             population.append(Person(_id=len(population), is_vaccinated=True))
+
+        # Initially infected population
         for _ in range(self.initial_infected):
             population.append(Person(_id=len(population), is_vaccinated=False, infection=self.virus))
+
+        # Healthy, unvaccinated population
         while len(population) < self.pop_size:
             population.append(Person(_id=len(population), is_vaccinated=False))
+
         return population
 
     def _simulation_should_continue(self):
+        # Check if there are still living infected individuals
         return any(p.infection and p.is_alive for p in self.population)
 
     def run(self):
-        self.logger.write_metadata(self.pop_size, self.vacc_percentage, self.virus.name, self.virus.mortality_rate, self.virus.repro_rate)
+        self.logger.write_metadata(
+            self.pop_size,
+            self.vacc_percentage,
+            self.virus.name,
+            self.virus.mortality_rate,
+            self.virus.repro_rate
+        )
 
         step = 0
         while self._simulation_should_continue():
@@ -39,14 +53,18 @@ class Simulation:
             total_living = sum(1 for p in self.population if p.is_alive)
             total_dead = self.pop_size - total_living
             total_vaccinated = sum(1 for p in self.population if p.is_vaccinated)
+
+            # Log step summary
             self.logger.log_step_summary(step, new_infections, interactions, total_living, total_dead, total_vaccinated)
+
+        # Final statistics
         total_living = sum(1 for p in self.population if p.is_alive)
         total_dead = self.pop_size - total_living
         total_vaccinated = sum(1 for p in self.population if p.is_vaccinated)
         self.logger.log_final_summary(self.pop_size, total_living, total_dead, total_vaccinated, step)
         print("Simulation complete.")
 
-    def time_step(self, step):
+    def time_step(self):
         """
         Simulate one time step of the simulation.
         """
@@ -59,24 +77,19 @@ class Simulation:
                     other_person = random.choice(self.population)
                     if other_person.is_alive:
                         interactions += 1
-                        new_infections += self.interaction(person, other_person)
+                        if self.interaction(person, other_person):
+                            new_infections += 1
 
+        # Infect newly infected individuals at the end of the time step
         self._infect_newly_infected()
 
-        living = sum(1 for p in self.population if p.is_alive)
-        dead = self.pop_size - living
-        vaccinated = sum(1 for p in self.population if p.is_vaccinated)
-
-        # Log the results for this step
-        self.logger.log_step_summary(step, new_infections, interactions, living, dead, vaccinated)
-
+        return new_infections, interactions
 
     def interaction(self, infected_person, random_person):
         if random_person.is_vaccinated or random_person.infection:
             return False
         elif random.random() < self.virus.repro_rate:
             self.newly_infected.append(random_person)
-            print(f"{infected_person._id} infected {random_person._id}")
             return True
         return False
 
@@ -89,6 +102,7 @@ class Simulation:
 if __name__ == "__main__":
     print("Welcome to the Herd Immunity Simulation!")
     try:
+        # Collect user inputs
         pop_size = int(input("Enter Population Size: "))
         vacc_percentage = float(input("Enter Vaccination Percentage (e.g., 0.1 for 10%): "))
         virus_name = input("Enter Virus Name: ")
@@ -96,10 +110,15 @@ if __name__ == "__main__":
         repro_rate = float(input("Enter Reproduction Rate (e.g., 0.5 for 50%): "))
         initial_infected = int(input("Enter Number of People Initially Infected: "))
 
+        # Validate inputs
+        if initial_infected > pop_size:
+            raise ValueError("Number of initially infected people cannot exceed the population size.")
+
         # Create the virus and simulation instances
         virus = Virus(virus_name, repro_rate, mortality_rate)
         sim = Simulation(pop_size, vacc_percentage, virus, initial_infected)
         sim.run()
+
     except ValueError as e:
         print(f"Invalid input: {e}")
     except Exception as e:
