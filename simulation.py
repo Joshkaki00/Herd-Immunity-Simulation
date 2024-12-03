@@ -71,16 +71,16 @@ class Simulation(object):
         self.logger.log_final_summary(self.pop_size, living, dead, vaccinated, time_step_counter)
 
     def time_step(self):
-        # This method will simulate interactions between people, calulate 
-        # new infections, and determine if vaccinations and fatalities from infections
-        # The goal here is have each infected person interact with a number of other 
-        # people in the population
-        # TODO: Loop over your population
-        # For each person if that person is infected
-        # have that person interact with 100 other living people 
-        # Run interactions by calling the interaction method below. That method
-        # takes the infected person and a random person
-        pass
+        ''' Simulate one time step of the simulation.'''
+        for person in self.population:
+            if person.infection and person.is_alive:
+                for _ in range(100):
+                    random_person = random.choice(self.population)
+                    if random_person.is_alive:
+                        self.interaction(person, random_person)
+
+        # Infect newly infected people at the end of the time step
+        self._infect_newly_infected()
 
     def interaction(self, infected_person, random_person):
         # TODO: Finish this method.
