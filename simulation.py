@@ -55,9 +55,7 @@ class Simulation(object):
         return len(infected_people) > 0 and len(living_people) > len(vaccinated_people)
 
     def run(self):
-        # This method starts the simulation. It should track the number of 
-        # steps the simulation has run and check if the simulation should 
-        # continue at the end of each step. 
+        ''' Run the simulation until it is complete.'''
 
         time_step_counter = 0
         should_continue = True
