@@ -46,25 +46,32 @@ class Simulation:
         self.logger.log_final_summary(self.pop_size, total_living, total_dead, total_vaccinated, step)
         print("Simulation complete.")
 
-    def time_step(self):
+    def time_step(self, step):
         interactions = 0
         new_infections = 0
         for person in self.population:
             if person.infection and person.is_alive:
-                for _ in range(10):  # Interactions per infected person
+                for _ in range(100):  # Each infected person interacts 100 times
                     other_person = random.choice(self.population)
                     if other_person.is_alive:
                         interactions += 1
-                        if self.interaction(person, other_person):
-                            new_infections += 1
+                        new_infections += self.interaction(person, other_person)
         self._infect_newly_infected()
-        return new_infections, interactions
+
+        # Calculate updated stats
+        total_living = sum(1 for p in self.population if p.is_alive)
+        total_dead = self.pop_size - total_living
+        total_vaccinated = sum(1 for p in self.population if p.is_vaccinated)
+
+        self.logger.log_time_step(step, new_infections, interactions, total_living, total_dead, total_vaccinated)
+
 
     def interaction(self, infected_person, random_person):
         if random_person.is_vaccinated or random_person.infection:
             return False
         elif random.random() < self.virus.repro_rate:
             self.newly_infected.append(random_person)
+            print(f"{infected_person._id} infected {random_person._id}")
             return True
         return False
 
