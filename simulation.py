@@ -1,5 +1,4 @@
-import random, sys
-# random.seed(42)
+import random
 from person import Person
 from logger import Logger
 from virus import Virus
