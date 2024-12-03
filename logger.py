@@ -1,15 +1,19 @@
 class Logger:
     def __init__(self, file_name):
         self.file_name = file_name
+        # Open the file in write mode to ensure it's empty at the start
+        with open(self.file_name, 'w') as file:
+            file.write("")  # Clear any existing content
 
     def write_metadata(self, pop_size, vacc_percentage, virus_name, mortality_rate, repro_rate):
-        with open(self.file_name, "w") as f:
-            f.write(f"Population Size: {pop_size}\n")
-            f.write(f"Vaccination Percentage: {vacc_percentage}\n")
-            f.write(f"Virus Name: {virus_name}\n")
-            f.write(f"Mortality Rate: {mortality_rate}\n")
-            f.write(f"Reproduction Rate: {repro_rate}\n")
-            f.write("=== Start of Simulation ===\n\n")
+        with open(self.file_name, 'a') as file:
+            file.write(f"Population Size: {pop_size}\n")
+            file.write(f"Vaccination Percentage: {vacc_percentage * 100}%\n")
+            file.write(f"Virus Name: {virus_name}\n")
+            file.write(f"Mortality Rate: {mortality_rate * 100}%\n")
+            file.write(f"Reproduction Rate: {repro_rate * 100}%\n")
+            file.write("=== Start of Simulation ===\n\n")
+
 
     def log_interactions(self, infected_id, random_id, did_infect):
         """

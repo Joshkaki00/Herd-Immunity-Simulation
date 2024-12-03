@@ -29,8 +29,8 @@ class Simulation:
         return any(p.infection and p.is_alive for p in self.population)
 
     def run(self):
-        self.logger.log_metadata(self.pop_size, self.vacc_percentage, self.virus.name,
-                                 self.virus.mortality_rate, self.virus.repro_rate)
+        self.logger.write_metadata(self.pop_size, self.vacc_percentage, self.virus.name, self.virus.mortality_rate, self.virus.repro_rate)
+
         step = 0
         while self._simulation_should_continue():
             step += 1
