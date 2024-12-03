@@ -2,26 +2,23 @@ import random
 from virus import Virus
 
 
-class Person(object):
-    # Define a person. 
-    def __init__(self, _id, is_vaccinated, infection = None):
-        # A person has an id, is_vaccinated and possibly an infection
-        self._id = _id  # int
-        self.is_vaccinated = is_vaccinated # Bool
-        self.infection = infection # Virus object
-        self.is_alive = True # Bool
+class Person:
+    def __init__(self, _id, is_vaccinated, infection=None):
+        self._id = _id
+        self.is_vaccinated = is_vaccinated
+        self.infection = infection
+        self.is_alive = True
 
-    def did_survive_infection(self) -> bool:
-        if self.infection:
-            survival_chance = 1 - self.infection.mortality_rate
-            if random.random() > survival_chance:
-                # Person has died
+    def did_survive_infection(self):
+        if self.infection is not None:
+            if random.random() < self.infection.mortality_rate:
                 self.is_alive = False
             else:
-                # The person survived
                 self.is_alive = True
+                self.is_vaccinated = True
             self.infection = None
         return self.is_alive
+
 
 if __name__ == "__main__":
     random.seed(42)
