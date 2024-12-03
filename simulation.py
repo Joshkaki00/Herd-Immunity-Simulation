@@ -7,7 +7,11 @@ from virus import Virus
 class Simulation:
     def __init__(self, virus, pop_size, vacc_percentage, initial_infected=1):
         """
-        Initialize the simulation with given parameters.
+        Initialize the simulation with the given parameters.
+        :param virus: Virus object, the virus to simulate.
+        :param pop_size: Integer, the total population size.
+        :param vacc_percentage: Float, percentage of vaccinated individuals.
+        :param initial_infected: Integer, initial number of infected individuals.
         """
         self.virus = virus
         self.pop_size = pop_size
@@ -19,20 +23,21 @@ class Simulation:
 
     def _create_population(self):
         """
-        Create a list of Person objects for the population.
+        Create the population for the simulation.
+        :return: List of Person objects.
         """
         population = []
         num_vaccinated = int(self.pop_size * self.vacc_percentage)
 
-        # Create vaccinated people
+        # Create vaccinated individuals
         for _ in range(num_vaccinated):
             population.append(Person(_id=len(population), is_vaccinated=True))
 
-        # Create infected people
+        # Create infected individuals
         for _ in range(self.initial_infected):
             population.append(Person(_id=len(population), is_vaccinated=False, infection=self.virus))
 
-        # Create healthy, unvaccinated people
+        # Fill the rest of the population with healthy, unvaccinated individuals
         while len(population) < self.pop_size:
             population.append(Person(_id=len(population), is_vaccinated=False))
 
@@ -40,7 +45,8 @@ class Simulation:
 
     def _simulation_should_continue(self):
         """
-        Determine if the simulation should continue.
+        Determine whether the simulation should continue.
+        :return: Boolean indicating whether to continue the simulation.
         """
         living_infected = any(p.infection and p.is_alive for p in self.population)
         living_unvaccinated = any(not p.is_vaccinated and p.is_alive for p in self.population)
@@ -59,8 +65,13 @@ class Simulation:
             time_step_counter += 1
             print(f"Running Time Step {time_step_counter}")
             self.time_step()
+            living = sum(1 for p in self.population if p.is_alive)
+            dead = self.pop_size - living
+            vaccinated = sum(1 for p in self.population if p.is_vaccinated)
+            new_infections = len(self.newly_infected)
+            self.logger.log_time_step(time_step_counter, new_infections, len(self.population))
 
-        # Log final statistics
+        # Log final summary
         living = sum(1 for p in self.population if p.is_alive)
         dead = self.pop_size - living
         vaccinated = sum(1 for p in self.population if p.is_vaccinated)
@@ -80,7 +91,9 @@ class Simulation:
 
     def interaction(self, infected_person, random_person):
         """
-        Simulate an interaction between an infected and a random person.
+        Simulate an interaction between an infected person and another person.
+        :param infected_person: Person object, the infected individual.
+        :param random_person: Person object, the individual being interacted with.
         """
         if random_person.is_vaccinated or random_person.infection or not random_person.is_alive:
             self.logger.log_interactions(infected_person._id, random_person._id, False)
@@ -99,7 +112,7 @@ class Simulation:
 
 
 if __name__ == "__main__":
-    # Test your simulation here
+    # Test the simulation
     virus_name = "Sniffles"
     repro_num = 0.5
     mortality_rate = 0.12
