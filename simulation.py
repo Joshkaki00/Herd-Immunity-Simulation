@@ -7,19 +7,20 @@ from virus import Virus
 
 class Simulation(object):
     def __init__(self, virus, pop_size, vacc_percentage, initial_infected=1):
-        # TODO: Create a Logger object and bind it to self.logger.
-        # Remember to call the appropriate logger method in the corresponding parts of the simulation.
-        
-        # TODO: Store the virus in an attribute
-        # TODO: Store pop_size in an attribute
-        # TODO: Store the vacc_percentage in a variable
-        # TODO: Store initial_infected in a variable
-        # You need to store a list of people (Person instances)
-        # Some of these people will be infected some will not. 
-        # Use the _create_population() method to create the list and 
-        # return it storing it in an attribute here. 
-        # TODO: Call self._create_population() and pass in the correct parameters.
-        pass
+        ''' Initialize the Simulation object.
+        :param virus: Virus object, the virus to simulate.
+        :param pop_size: Integer, the total population size.
+        :param vacc_percentage: Float, the percentage of vaccinated individuals.
+        :param initial_infected: Integer, the initial number of infected individuals.
+        '''
+
+        self.virus = virus
+        self.pop_size = pop_size
+        self.vacc_percentage = vacc_percentage
+        self.initial_infected = initial_infected
+        self.logger = Logger("simulation_log.txt")
+        self.population = self._create_population()
+        self.newly_infected = []
 
     def _create_population(self):
         # TODO: Create a list of people (Person instances). This list 
