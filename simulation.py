@@ -64,12 +64,11 @@ class Simulation(object):
             time_step_counter += 1
             self.time_step()
 
-        # TODO: Write meta data to the logger. This should be starting 
-        # statistics for the simulation. It should include the initial
-        # population size and the virus. 
-        
-        # TODO: When the simulation completes you should conclude this with 
-        # the logger. Send the final data to the logger. 
+        # Log the final summary
+        living = sum(1 for person in self.population if person.is_alive)
+        dead = self.pop_size - living
+        vaccinated = sum(1 for person in self.population if person.is_vaccinated)
+        self.logger.log_final_summary(self.pop_size, living, dead, vaccinated, time_step_counter)
 
     def time_step(self):
         # This method will simulate interactions between people, calulate 
