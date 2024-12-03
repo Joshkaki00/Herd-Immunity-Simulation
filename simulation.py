@@ -40,7 +40,7 @@ class Simulation:
     def run(self):
         self.logger.write_metadata(
             self.pop_size,
-            self.vacc_percentage,
+            self.initial_infected,
             self.virus.name,
             self.virus.mortality_rate,
             self.virus.repro_rate
@@ -50,13 +50,16 @@ class Simulation:
         while self._simulation_should_continue():
             step += 1
             print(f"Running Time Step {step}")
-            new_infections, interactions = self.time_step()
+            new_infections, deaths, interactions = self.time_step()
             self.total_interactions += interactions
             total_living = sum(1 for p in self.population if p.is_alive)
             total_dead = self.pop_size - total_living
             total_vaccinated = sum(1 for p in self.population if p.is_vaccinated)
-            self.logger.log_step_summary(step, new_infections, interactions, total_living, total_dead, total_vaccinated)
 
+            # Log step summary
+            self.logger.log_step_summary(step, new_infections, deaths, total_living, total_dead, total_vaccinated)
+
+        # Final statistics
         total_living = sum(1 for p in self.population if p.is_alive)
         total_dead = self.pop_size - total_living
         total_vaccinated = sum(1 for p in self.population if p.is_vaccinated)
@@ -76,12 +79,14 @@ class Simulation:
     def time_step(self):
         interactions = 0
         new_infections = 0
+        deaths = 0
 
         for person in self.population:
             if person.infection and person.is_alive:
                 if random.random() < self.virus.mortality_rate:
                     person.is_alive = False
                     self.death_interactions += 1
+                    deaths += 1
                     continue
 
                 for _ in range(100):
@@ -93,7 +98,7 @@ class Simulation:
 
         self._infect_newly_infected()
 
-        return new_infections, interactions
+        return new_infections, deaths, interactions
 
     def interaction(self, random_person):
         if random_person.is_vaccinated or random_person.infection or not random_person.is_alive:
