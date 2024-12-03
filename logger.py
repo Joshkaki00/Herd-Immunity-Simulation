@@ -11,6 +11,16 @@ class Logger:
             f.write(f"Reproduction Rate: {repro_rate}\n")
             f.write("=== Start of Simulation ===\n\n")
 
+    def log_interactions(self, infected_id, random_id, did_infect):
+        """
+        Log the result of an interaction.
+        """
+        with open(self.file_name, "a") as f:
+            if did_infect:
+                f.write(f"Infected Person {infected_id} interacted with Person {random_id}. Result: New infection occurred.\n")
+            else:
+                f.write(f"Infected Person {infected_id} interacted with Person {random_id}. Result: No infection occurred.\n")
+
     def log_step_summary(self, step, new_infections, interactions, living, dead, vaccinated):
         with open(self.file_name, "a") as f:
             f.write(f"Step {step}:\n")
