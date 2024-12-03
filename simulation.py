@@ -6,12 +6,12 @@ from virus import Virus
 
 
 class Simulation:
-    def __init__(self, pop_size, vacc_percentage, virus, initial_infected=1):
+    def __init__(self, pop_size, vacc_percentage, virus, initial_infected=1, verbose=False):
         self.pop_size = pop_size
         self.vacc_percentage = vacc_percentage
         self.virus = virus
         self.initial_infected = initial_infected
-        self.logger = Logger("simulation_log.txt")
+        self.logger = Logger("simulation_log.txt", verbose=verbose)
         self.population = self._create_population()
         self.newly_infected = []
         self.total_interactions = 0
