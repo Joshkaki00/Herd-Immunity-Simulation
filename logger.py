@@ -1,7 +1,7 @@
 class Logger:
-    def __init__(self, file_name):
+    def __init__(self, file_name, verbose=False):
         self.file_name = file_name
-        # Open the log file in write mode to clear previous logs
+        self.verbose = verbose
         with open(self.file_name, 'w') as file:
             file.write("")  # Clear the file content
 
@@ -21,12 +21,13 @@ class Logger:
             file.write(f"  Total Interactions: {interactions}\n\n")
 
     def log_interactions(self, infected_id, random_id, did_infect):
-        with open(self.file_name, 'a') as file:
-            file.write(f"Infected Person {infected_id} interacted with Person {random_id}. ")
-            if did_infect:
-                file.write("Result: New infection occurred.\n")
-            else:
-                file.write("Result: No infection occurred.\n")
+        if self.verbose:
+            with open(self.file_name, 'a') as file:
+                file.write(f"Infected Person {infected_id} interacted with Person {random_id}. ")
+                if did_infect:
+                    file.write("Result: New infection occurred.\n")
+                else:
+                    file.write("Result: No infection occurred.\n")
 
     def log_final_summary(self, pop_size, living, dead, vaccinated, steps):
         with open(self.file_name, 'a') as file:
