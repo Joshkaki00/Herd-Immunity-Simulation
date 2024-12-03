@@ -1,0 +1,69 @@
+Population Size: 1000
+Vaccination Percentage: 20.00%
+Virus Name: HIV
+Mortality Rate: 80.00%
+Reproduction Rate: 40.00%
+=== Start of Simulation ===
+
+Step 1:
+  New Infections: 91
+  Total Interactions: 297
+  Total Living: 993
+  Total Dead: 7
+  Total Vaccinated: 200
+
+Step 2:
+  New Infections: 364
+  Total Interactions: 1268
+  Total Living: 918
+  Total Dead: 82
+  Total Vaccinated: 200
+
+Step 3:
+  New Infections: 1045
+  Total Interactions: 4933
+  Total Living: 686
+  Total Dead: 314
+  Total Vaccinated: 200
+
+Step 4:
+  New Infections: 130
+  Total Interactions: 4317
+  Total Living: 323
+  Total Dead: 677
+  Total Vaccinated: 200
+
+Step 5:
+  New Infections: 0
+  Total Interactions: 589
+  Total Living: 221
+  Total Dead: 779
+  Total Vaccinated: 200
+
+Step 6:
+  New Infections: 0
+  Total Interactions: 46
+  Total Living: 202
+  Total Dead: 798
+  Total Vaccinated: 200
+
+Step 7:
+  New Infections: 0
+  Total Interactions: 17
+  Total Living: 201
+  Total Dead: 799
+  Total Vaccinated: 200
+
+Step 8:
+  New Infections: 0
+  Total Interactions: 0
+  Total Living: 200
+  Total Dead: 800
+  Total Vaccinated: 200
+
+=== Final Summary ===
+Total Population: 1000
+Living: 200
+Dead: 800
+Vaccinated: 200
+Total Steps: 8
