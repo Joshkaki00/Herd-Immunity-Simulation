@@ -33,8 +33,10 @@ class Simulation:
         return population
 
     def _simulation_should_continue(self):
-        # Check if there are still living infected individuals
-        return any(p.infection and p.is_alive for p in self.population)
+        # Simulation continues as long as there are infected people alive
+        living_infected = any(p.infection and p.is_alive for p in self.population)
+        living_unvaccinated = any(not p.is_vaccinated and p.is_alive for p in self.population)
+        return living_infected and living_unvaccinated
 
     def run(self):
         self.logger.write_metadata(
@@ -73,11 +75,17 @@ class Simulation:
 
         for person in self.population:
             if person.infection and person.is_alive:
-                for _ in range(100):  # Each infected person interacts 100 times
+                # Determine if the infected person dies
+                if random.random() < self.virus.mortality_rate:
+                    person.is_alive = False
+                    continue  # Skip interactions for dead individuals
+
+                # Interactions with 100 other random people
+                for _ in range(100):
                     other_person = random.choice(self.population)
                     if other_person.is_alive:
                         interactions += 1
-                        if self.interaction(person, other_person):
+                        if self.interaction(other_person):
                             new_infections += 1
 
         # Infect newly infected individuals at the end of the time step
@@ -85,8 +93,8 @@ class Simulation:
 
         return new_infections, interactions
 
-    def interaction(self, infected_person, random_person):
-        if random_person.is_vaccinated or random_person.infection:
+    def interaction(self, random_person):
+        if random_person.is_vaccinated or random_person.infection or not random_person.is_alive:
             return False
         elif random.random() < self.virus.repro_rate:
             self.newly_infected.append(random_person)
@@ -97,6 +105,7 @@ class Simulation:
         for person in self.newly_infected:
             person.infection = self.virus
         self.newly_infected = []
+
 
 
 if __name__ == "__main__":
