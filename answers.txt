@@ -1,5 +1,11 @@
-Inputs: Population Size: 1000
-Percent Vaccinated: 20%
-Virus Name: Seasonal Flu
-Mortality Rate: 10%
-Reproductive Rate: 20%
+1.  Inputs: Population Size: 1000
+    Percent Vaccinated: 20%
+    Virus Name: Seasonal Flu
+    Mortality Rate: 10%
+    Reproductive Rate: 20%
+
+2.  20% of the population became infected before the virus burned out.
+
+3.  20% died from the virus.
+
+4.  800 interactions saved from vaccination
