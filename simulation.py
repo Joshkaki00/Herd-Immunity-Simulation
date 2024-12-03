@@ -86,6 +86,6 @@ if __name__ == "__main__":
     initial_infected = 10
 
     # Make a new instance of the imulation
-    virus = Virus(virus, pop_size, vacc_percentage, initial_infected)
+    virus = Virus(virus_name, repro_num, mortality_rate)
     sim = Simulation(pop_size, vacc_percentage, initial_infected, virus)
     sim.run()
