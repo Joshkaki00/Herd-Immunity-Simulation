@@ -111,24 +111,32 @@ class Simulation:
 if __name__ == "__main__":
     print("Welcome to the Herd Immunity Simulation!")
     try:
-        # Collect user inputs
-        pop_size = int(input("Enter Population Size: "))
-        vacc_percentage = float(input("Enter Vaccination Percentage (e.g., 0.1 for 10%): "))
-        virus_name = input("Enter Virus Name: ")
-        mortality_rate = float(input("Enter Mortality Rate (e.g., 0.12 for 12%): "))
-        repro_rate = float(input("Enter Reproduction Rate (e.g., 0.5 for 50%): "))
-        initial_infected = int(input("Enter Number of People Initially Infected: "))
+        while True:
+            # Collect user inputs
+            pop_size = int(input("Enter Population Size: "))
+            vacc_percentage = float(input("Enter Vaccination Percentage (e.g., 0.1 for 10%): "))
+            virus_name = input("Enter Virus Name: ")
+            mortality_rate = float(input("Enter Mortality Rate (e.g., 0.12 for 12%): "))
+            repro_rate = float(input("Enter Reproduction Rate (e.g., 0.5 for 50%): "))
+            initial_infected = int(input("Enter Number of People Initially Infected: "))
 
-        # Validate inputs
-        if initial_infected > pop_size:
-            raise ValueError("Number of initially infected people cannot exceed the population size.")
+            # Validate inputs
+            if initial_infected > pop_size:
+                raise ValueError("Number of initially infected people cannot exceed the population size.")
 
-        # Create the virus and simulation instances
-        virus = Virus(virus_name, repro_rate, mortality_rate)
-        sim = Simulation(pop_size, vacc_percentage, virus, initial_infected)
-        sim.run()
+            # Create the virus and simulation instances
+            virus = Virus(virus_name, repro_rate, mortality_rate)
+            sim = Simulation(pop_size, vacc_percentage, virus, initial_infected)
+            sim.run()
+
+            # Ask the user if they want to test for another disease
+            retry = input("Would you like to test for a different disease? (Y/N): ").strip().lower()
+            if retry != 'y':
+                print("Exiting the program. Thank you!")
+                break
 
     except ValueError as e:
         print(f"Invalid input: {e}")
     except Exception as e:
         print(f"An error occurred: {e}")
+
