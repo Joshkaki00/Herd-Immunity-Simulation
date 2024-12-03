@@ -85,8 +85,16 @@ class Simulation:
         return 0
 
     def _infect_newly_infected(self):
+        """
+        Infect all individuals marked as newly infected and determine survival.
+        """
         for person in self.newly_infected:
+            # Infect the person
             person.infection = self.virus
+            # Determine if they survive the infection
+            if random.random() < self.virus.mortality_rate:
+                person.is_alive = False  # Mark the person as dead
+        # Clear the list of newly infected
         self.newly_infected = []
 
 
