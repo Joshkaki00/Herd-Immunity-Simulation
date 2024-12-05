@@ -33,9 +33,10 @@ class Simulation:
         return population
 
     def _simulation_should_continue(self):
+        # Simulation should only continue if there are infected and unvaccinated individuals alive
         living_infected = any(p.infection and p.is_alive for p in self.population)
-        living_count = sum(1 for p in self.population if p.is_alive)
-        return living_infected and living_count > 0
+        unvaccinated_alive = any(not p.is_vaccinated and p.is_alive for p in self.population)
+        return living_infected and unvaccinated_alive
 
     def run(self):
         self.logger.write_metadata(
