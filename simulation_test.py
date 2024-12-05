@@ -22,3 +22,9 @@ class SimulationTest(unittest.TestCase):
         for person in self.simulation.population:
             person.is_alive = False
         self.assertFalse(self.simulation._simulation_should_continue())
+
+    def test_time_step(self):
+        new_infections, deaths, interactions = self.simulation.time_step()
+        self.assertGreaterEqual(new_infections, 0)
+        self.assertGreaterEqual(deaths, 0)
+        self.assertGreaterEqual(interactions, 0)
