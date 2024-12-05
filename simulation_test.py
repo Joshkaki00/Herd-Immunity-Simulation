@@ -41,5 +41,15 @@ class SimulationTest(unittest.TestCase):
         self.assertEqual(person.infection, self.virus)
         self.assertEqual(len(self.simulation.newly_infected), 0)
 
+    def test_large_simulation(self):
+        virus = Virus("Ebola", 0.25, 0.7)
+        large_simulation = Simulation(100000, 0.9, virus, 10)
+        self.assertEqual(len(large_simulation.population), 100000)
+        vaccinated_count = sum(1 for p in large_simulation.population if p.is_vaccinated)
+        infected_count = sum(1 for p in large_simulation.population if p.infection)
+        self.assertEqual(vaccinated_count, 90000)
+        self.assertEqual(infected_count, 10)
+        self.assertTrue(large_simulation._simulation_should_continue())
+
 if __name__ == "__main__":
     unittest.main()
