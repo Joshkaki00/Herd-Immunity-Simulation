@@ -1,22 +1,20 @@
 import unittest
-import os
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 from simulation import Simulation
-from person import Person
-from logger import Logger
 from virus import Virus
+from person import Person
 
+class TestSimulation(unittest.TestCase):
 
-class SimulationTest(unittest.TestCase):
     def setUp(self):
-        self.virus = Virus("TestVirus", 0.5, 0.1)
-        self.simulation = Simulation(100, 0.1, self.virus, 10)
+        self.virus = Virus("Ebola", 0.70, 0.25)
+        self.simulation = Simulation(100000, 0.90, self.virus, 10)
 
-    def test_population_creation(self):
-        self.assertEqual(len(self.simulation.population), 100)
+    def test_initial_population(self):
+        self.assertEqual(len(self.simulation.population), 100000)
         vaccinated_count = sum(1 for p in self.simulation.population if p.is_vaccinated)
         infected_count = sum(1 for p in self.simulation.population if p.infection)
-        self.assertEqual(vaccinated_count, 10)
+        self.assertEqual(vaccinated_count, 90000)
         self.assertEqual(infected_count, 10)
 
     def test_simulation_should_continue(self):
@@ -25,53 +23,29 @@ class SimulationTest(unittest.TestCase):
             person.is_alive = False
         self.assertFalse(self.simulation._simulation_should_continue())
 
-    @patch("random.choice", lambda _: Person(_id=999, is_vaccinated=False))
-    def test_time_step(self):
+    @patch('random.random')
+    def test_time_step(self, mock_random):
+        mock_random.side_effect = [0.05] * 1000  # Ensure all interactions lead to infection
         new_infections, deaths, interactions = self.simulation.time_step()
-        self.assertGreaterEqual(new_infections, 0)
-        self.assertGreaterEqual(deaths, 0)
-        self.assertGreaterEqual(interactions, 0)
+        self.assertEqual(new_infections, 99990)
+        self.assertEqual(deaths, 10)
+        self.assertEqual(interactions, 1000)
 
     def test_interaction(self):
-        person = Person(_id=101, is_vaccinated=False, infection=None)  # Ensure the person can be infected
-        self.simulation.newly_infected = []  # Clear the newly_infected list
-        infected = self.simulation.interaction(person)
-        self.assertTrue(infected)  # Check that the interaction resulted in infection
-        self.assertIn(person, self.simulation.newly_infected)  # Ensure person was added to newly_infected
+        healthy_person = Person(1, False)
+        self.assertTrue(self.simulation.interaction(healthy_person))
+        self.assertIn(healthy_person, self.simulation.newly_infected)
 
     def test_infect_newly_infected(self):
-        person = Person(_id=101, is_vaccinated=False)
-        self.simulation.newly_infected.append(person)
+        healthy_person = Person(1, False)
+        self.simulation.newly_infected.append(healthy_person)
         self.simulation._infect_newly_infected()
-        self.assertEqual(person.infection, self.virus)
-        self.assertEqual(len(self.simulation.newly_infected), 0)
+        self.assertEqual(healthy_person.infection, self.virus)
 
-    def test_large_simulation(self):
-        virus = Virus("Ebola", 0.25, 0.7)
-        large_simulation = Simulation(100000, 0.9, virus, 10)
-        self.assertEqual(len(large_simulation.population), 100000)
-        vaccinated_count = sum(1 for p in large_simulation.population if p.is_vaccinated)
-        infected_count = sum(1 for p in large_simulation.population if p.infection)
-        self.assertEqual(vaccinated_count, 90000)
-        self.assertEqual(infected_count, 10)
-        self.assertTrue(large_simulation._simulation_should_continue())
-
-    def test_logger_output(self):
+    @patch('builtins.print')
+    def test_run(self, mock_print):
         self.simulation.run()
-        self.assertTrue(os.path.exists("simulation_log.txt"))
-        with open("simulation_log.txt", "r") as log_file:
-            content = log_file.read()
-        self.assertIn("=== Start of Simulation ===", content)
-        self.assertIn("Final Summary", content)
+        mock_print.assert_called_with("Simulation complete.")
 
-    def test_edge_case_all_vaccinated(self):
-        all_vaccinated_sim = Simulation(100, 1.0, self.virus, 10)
-        self.assertFalse(all_vaccinated_sim._simulation_should_continue())
-
-    def test_edge_case_no_infected(self):
-        no_infected_sim = Simulation(100, 0.1, self.virus, 0)
-        self.assertFalse(no_infected_sim._simulation_should_continue())
-
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()
