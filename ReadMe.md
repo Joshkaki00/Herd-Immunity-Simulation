@@ -12,7 +12,7 @@ This project simulates the spread of a virus through a population, taking into a
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/yourusername/Herd-Immunity-Simulation.git
+    git clone https://github.com/<yourusername>/Herd-Immunity-Simulation.git
     ```
 2. Navigate to the project directory:
     ```sh
