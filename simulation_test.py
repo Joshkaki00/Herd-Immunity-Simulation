@@ -1,14 +1,21 @@
+import unittest
+import os
+from unittest.mock import patch
 from simulation import Simulation
-import random
 from person import Person
 from logger import Logger
 from virus import Virus
-import unittest, os, sys
+
 
 class SimulationTest(unittest.TestCase):
     def setUp(self):
         self.virus = Virus("TestVirus", 0.5, 0.1)
         self.simulation = Simulation(100, 0.1, self.virus, 10)
+
+    def tearDown(self):
+        # Clean up log file if it exists
+        if os.path.exists("simulation_log.txt"):
+            os.remove("simulation_log.txt")
 
     def test_population_creation(self):
         self.assertEqual(len(self.simulation.population), 100)
@@ -23,6 +30,7 @@ class SimulationTest(unittest.TestCase):
             person.is_alive = False
         self.assertFalse(self.simulation._simulation_should_continue())
 
+    @patch("random.choice", lambda _: Person(_id=999, is_vaccinated=False))
     def test_time_step(self):
         new_infections, deaths, interactions = self.simulation.time_step()
         self.assertGreaterEqual(new_infections, 0)
@@ -50,6 +58,23 @@ class SimulationTest(unittest.TestCase):
         self.assertEqual(vaccinated_count, 90000)
         self.assertEqual(infected_count, 10)
         self.assertTrue(large_simulation._simulation_should_continue())
+
+    def test_logger_output(self):
+        self.simulation.run()
+        self.assertTrue(os.path.exists("simulation_log.txt"))
+        with open("simulation_log.txt", "r") as log_file:
+            content = log_file.read()
+        self.assertIn("=== Start of Simulation ===", content)
+        self.assertIn("Final Summary", content)
+
+    def test_edge_case_all_vaccinated(self):
+        all_vaccinated_sim = Simulation(100, 1.0, self.virus, 10)
+        self.assertFalse(all_vaccinated_sim._simulation_should_continue())
+
+    def test_edge_case_no_infected(self):
+        no_infected_sim = Simulation(100, 0.1, self.virus, 0)
+        self.assertFalse(no_infected_sim._simulation_should_continue())
+
 
 if __name__ == "__main__":
     unittest.main()
