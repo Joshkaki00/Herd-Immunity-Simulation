@@ -33,3 +33,13 @@ class SimulationTest(unittest.TestCase):
         person = Person(_id=101, is_vaccinated=False)
         self.assertTrue(self.simulation.interaction(person))
         self.assertIn(person, self.simulation.newly_infected)
+
+    def test_infect_newly_infected(self):
+        person = Person(_id=101, is_vaccinated=False)
+        self.simulation.newly_infected.append(person)
+        self.simulation._infect_newly_infected()
+        self.assertEqual(person.infection, self.virus)
+        self.assertEqual(len(self.simulation.newly_infected), 0)
+
+if __name__ == "__main__":
+    unittest.main()
