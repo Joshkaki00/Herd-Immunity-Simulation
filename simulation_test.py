@@ -33,8 +33,10 @@ class TestSimulation(unittest.TestCase):
 
     def test_interaction(self):
         healthy_person = Person(1, False)
-        self.assertTrue(self.simulation.interaction(healthy_person))
-        self.assertIn(healthy_person, self.simulation.newly_infected)
+        self.simulation.newly_infected = []
+        infected = self.simulation.interaction(healthy_person)
+        self.assertTrue(infected, "The healthy person should become infected.")
+        self.assertIn(healthy_person, self.simulation.newly_infected, "The person should be in newly_infected.")
 
     def test_infect_newly_infected(self):
         healthy_person = Person(1, False)
