@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 from simulation import Simulation
 from virus import Virus
 from person import Person
