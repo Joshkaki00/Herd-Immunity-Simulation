@@ -25,7 +25,8 @@ class TestSimulation(unittest.TestCase):
 
     @patch('random.random')
     def test_time_step(self, mock_random):
-        mock_random.side_effect = [0.05] * len(self.simulation.population)
+        # Ensure some interactions result in infection
+        mock_random.side_effect = [0.05 if i % 2 == 0 else 0.95 for i in range(1000)]  # Simulate infections
         new_infections, deaths, interactions = self.simulation.time_step()
         self.assertGreater(new_infections, 0, "There should be new infections.")
         self.assertGreater(deaths, 0, "There should be deaths.")
