@@ -33,11 +33,11 @@ class SimulationTest(unittest.TestCase):
         self.assertGreaterEqual(interactions, 0)
 
     def test_interaction(self):
-        person = Person(_id=101, is_vaccinated=False, infection=None)
-        self.simulation.newly_infected = []  # Clear the newly_infected list before testing
+        person = Person(_id=101, is_vaccinated=False, infection=None)  # Ensure the person can be infected
+        self.simulation.newly_infected = []  # Clear the newly_infected list
         infected = self.simulation.interaction(person)
         self.assertTrue(infected)  # Check that the interaction resulted in infection
-        self.assertIn(person, self.simulation.newly_infected)
+        self.assertIn(person, self.simulation.newly_infected)  # Ensure person was added to newly_infected
 
     def test_infect_newly_infected(self):
         person = Person(_id=101, is_vaccinated=False)
