@@ -12,11 +12,6 @@ class SimulationTest(unittest.TestCase):
         self.virus = Virus("TestVirus", 0.5, 0.1)
         self.simulation = Simulation(100, 0.1, self.virus, 10)
 
-    def tearDown(self):
-        # Clean up log file if it exists
-        if os.path.exists("simulation_log.txt"):
-            os.remove("simulation_log.txt")
-
     def test_population_creation(self):
         self.assertEqual(len(self.simulation.population), 100)
         vaccinated_count = sum(1 for p in self.simulation.population if p.is_vaccinated)
