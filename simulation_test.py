@@ -16,3 +16,9 @@ class SimulationTest(unittest.TestCase):
         infected_count = sum(1 for p in self.simulation.population if p.infection)
         self.assertEqual(vaccinated_count, 10)
         self.assertEqual(infected_count, 10)
+
+    def test_simulation_should_continue(self):
+        self.assertTrue(self.simulation._simulation_should_continue())
+        for person in self.simulation.population:
+            person.is_alive = False
+        self.assertFalse(self.simulation._simulation_should_continue())
