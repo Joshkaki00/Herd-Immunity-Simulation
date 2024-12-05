@@ -28,3 +28,8 @@ class SimulationTest(unittest.TestCase):
         self.assertGreaterEqual(new_infections, 0)
         self.assertGreaterEqual(deaths, 0)
         self.assertGreaterEqual(interactions, 0)
+
+    def test_interaction(self):
+        person = Person(_id=101, is_vaccinated=False)
+        self.assertTrue(self.simulation.interaction(person))
+        self.assertIn(person, self.simulation.newly_infected)
