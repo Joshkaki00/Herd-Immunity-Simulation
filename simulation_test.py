@@ -47,8 +47,7 @@ class TestSimulation(unittest.TestCase):
 
     @patch.object(Simulation, '_simulation_should_continue', side_effect=[True, False])
     @patch('builtins.print')
-    def test_run(self, mock_print, mock_continue):
-        mock_continue.side_effect = [True, False]
+    def test_run(self, mock_print):
         self.simulation.run()
         mock_print.assert_any_call("Simulation complete.")
         total_living = sum(1 for p in self.simulation.population if p.is_alive)
