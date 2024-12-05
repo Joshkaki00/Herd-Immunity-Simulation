@@ -44,8 +44,8 @@ class TestSimulation(unittest.TestCase):
         self.simulation._infect_newly_infected()
         self.assertEqual(healthy_person.infection, self.virus)
 
-    @patch('builtins.print')
     @patch.object(Simulation, '_simulation_should_continue', side_effect=[True, False])
+    @patch('builtins.print')
     def test_run(self, mock_print):
         self.simulation.run()
         mock_print.assert_any_call("Simulation complete.")
