@@ -24,7 +24,7 @@ This project simulates the spread of a virus through a population, taking into a
 
 To run the simulation, execute the following command:
 ```sh
-python simulation.py
+python3 simulation.py
 ```
 You will be prompted to enter the population size, vaccination percentage, virus details, and the number of initially infected individuals.
 
