@@ -46,9 +46,11 @@ class TestSimulation(unittest.TestCase):
 
     @patch('builtins.print')
     @patch.object(Simulation, '_simulation_should_continue', side_effect=[True, False])
-    def test_run(self, mock_continue, mock_print):
+    def test_run(self, mock_print):
         self.simulation.run()
         mock_print.assert_any_call("Simulation complete.")
+        total_living = sum(1 for p in self.simulation.population if p.is_alive)
+        self.assertGreater(total_living, 0, "There should be living individuals at the end.")
 
 if __name__ == '__main__':
     unittest.main()
