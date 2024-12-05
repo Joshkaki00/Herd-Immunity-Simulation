@@ -103,8 +103,8 @@ class Simulation:
 
     def interaction(self, random_person):
         if random_person.is_vaccinated or random_person.infection or not random_person.is_alive:
-            return False
-        elif random.random() < self.virus.repro_rate:
+            return False  # No infection occurs
+        elif random.random() < self.virus.repro_rate:  # Chance of infection
             self.newly_infected.append(random_person)
             return True
         return False
