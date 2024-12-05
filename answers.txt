@@ -1,5 +1,5 @@
 1.  Inputs: Population Size: 1000
-    Percent Vaccinated: 20%
+    Percent Vaccinated: 80%
     Virus Name: Seasonal Flu
     Mortality Rate: 10%
     Reproductive Rate: 20%
